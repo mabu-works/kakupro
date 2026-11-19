@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>kakupro｜架空プロフィール生成器</title>
+<meta name="description" content="ワンボタンで架空の人物プロフィールをランダム生成。項目ごとの固定・再抽選、プロフィールカード画像のダウンロード、X投稿向けテキストのコピーができます。">
+<meta name="theme-color" content="#0e7c86">
+<link rel="manifest" href="./manifest.webmanifest">
+<link rel="icon" href="./icons/icon-192.png" type="image/png">
+<link rel="apple-touch-icon" href="./icons/icon-192.png">
+<link rel="stylesheet" href="./style.css">
+</head>
+<body>
+<header class="site-header">
+  <h1><span class="logo">架</span> kakupro</h1>
+  <p class="tagline">架空プロフィール生成器｜ボタンひとつで、架空の人物が生まれます</p>
+</header>
+
+<main>
+  <section class="card" aria-labelledby="profile-title">
+    <h2 id="profile-title">プロフィール</h2>
+    <div id="profile-list" class="profile-list"></div>
+    <div class="button-row">
+      <button type="button" id="btn-regen" class="primary">再生成（固定以外）</button>
+      <button type="button" id="btn-all-new">全部ランダムに作り直す</button>
+    </div>
+    <p class="note">各項目の「固定」にチェックを入れると、再生成してもその項目は変わりません。「再抽選」はその項目だけを引き直します。</p>
+    <p id="status" class="status" role="status"></p>
+  </section>
+
+  <section class="card" aria-labelledby="share-title">
+    <h2 id="share-title">共有する</h2>
+    <div class="button-row">
+      <button type="button" id="btn-card" class="primary">カード画像をダウンロード</button>
+      <button type="button" id="btn-copy">テキストをコピー（X投稿向け）</button>
+    </div>
+    <canvas id="card-canvas" width="1200" height="630" class="preview" aria-label="プロフィールカードのプレビュー"></canvas>
+    <label class="field-label" for="share-text">コピーされるテキスト</label>
+    <textarea id="share-text" rows="10" readonly></textarea>
+  </section>
+
+  <section class="card" aria-labelledby="about-title">
+    <h2 id="about-title">このツールについて</h2>
+    <p>kakupro は、実在しない架空の人物のプロフィールをランダムに生成するお遊びツールです。名前は姓と名の組み合わせ、職業は30種以上、その他の項目も各15種以上のプールから選ばれます。</p>
+    <p>創作のキャラクター作りの種にしたり、テストデータの人物像を考えるきっかけにしたり、ただ眺めて楽しんだりと、自由に使ってください。生成結果はブラウザの中だけで作られ、外部に送信されることはありません。</p>
+  </section>
+</main>
+
+<footer class="site-footer">
+  <p>kakupro — 架空プロフィール生成器</p>
+</footer>
+
+<script src="./app.js"></script>
+<script>
+if ('serviceWorker' in navigator) {
+  window.addEventListener('load', () => {
+    navigator.serviceWorker.register('./sw.js').catch(() => {});
+  });
+}
+</script>
+</body>
+</html>
