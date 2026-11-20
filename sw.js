@@ -1,6 +1,6 @@
 'use strict';
 
-const CACHE_NAME = 'kakupro-v1';
+const CACHE_NAME = 'kakupro-v3';
 const PRECACHE_URLS = [
   './',
   './index.html',

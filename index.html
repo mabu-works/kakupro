@@ -5,15 +5,33 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>kakupro｜架空プロフィール生成器</title>
 <meta name="description" content="ワンボタンで架空の人物プロフィールをランダム生成。項目ごとの固定・再抽選、プロフィールカード画像のダウンロード、X投稿向けテキストのコピーができます。">
-<meta name="theme-color" content="#0e7c86">
+<meta name="theme-color" content="#0a0f1c">
 <link rel="manifest" href="./manifest.webmanifest">
 <link rel="icon" href="./icons/icon-192.png" type="image/png">
 <link rel="apple-touch-icon" href="./icons/icon-192.png">
+<script>
+try {
+  var savedTheme = localStorage.getItem("kakupro-theme");
+  if (savedTheme === "light" || savedTheme === "dark") {
+    document.documentElement.setAttribute("data-theme", savedTheme);
+  }
+} catch (e) { /* テーマ保存が使えない環境ではダークを既定にする */ }
+</script>
 <link rel="stylesheet" href="./style.css">
 </head>
 <body>
-<header class="site-header">
-  <h1><span class="logo">架</span> kakupro</h1>
+<nav class="topbar">
+  <div class="wrap topbar-in">
+    <a class="brand" href="#top">kakupro</a>
+    <span class="topbar-links">
+      <button type="button" class="theme-toggle" id="themeToggle" aria-label="テーマ切り替え">🌙</button>
+    </span>
+  </div>
+</nav>
+
+<header class="site-header" id="top">
+  <p class="eyebrow">架空プロフィール生成器</p>
+  <h1><span class="logo">架</span> <span class="title-text">kakupro</span></h1>
   <p class="tagline">架空プロフィール生成器｜ボタンひとつで、架空の人物が生まれます</p>
 </header>
 

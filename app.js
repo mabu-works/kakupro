@@ -168,7 +168,7 @@ const rows = [
 ['特技', state.skill.value], ['好きなもの', state.like.value],
 ['苦手なもの', state.dislike.value], ['口癖', state.phrase.value]
 ];
-let y = 248;
+let y = 236;
 for (const [label, value] of rows) {
 ctx.fillStyle = '#7dd3d8';
 ctx.font = '700 28px sans-serif';
@@ -176,16 +176,17 @@ ctx.fillText(label, 64, y);
 ctx.fillStyle = '#ffffff';
 ctx.font = '30px sans-serif';
 ctx.fillText(value, 250, y);
-y += 52;
+y += 48;
 }
 
+/* 一言コメントとクレジットが重ならないよう、行間を詰めて下部に余白を確保する */
 ctx.fillStyle = '#fde68a';
 ctx.font = '700 30px sans-serif';
-ctx.fillText('「' + state.comment.value.replace(/^「|」$/g, '') + '」', 64, y + 14);
+ctx.fillText('「' + state.comment.value.replace(/^「|」$/g, '') + '」', 64, y + 22);
 
 ctx.fillStyle = '#8fb7ba';
 ctx.font = '24px sans-serif';
-ctx.fillText('kakupro — 架空プロフィール生成器', 64, H - 44);
+ctx.fillText('kakupro — 架空プロフィール生成器', 64, H - 40);
 }
 
 /* ===== ボタン ===== */
@@ -223,6 +224,31 @@ document.execCommand('copy');
 setStatus('テキストをコピーしました。');
 }
 });
+
+/* ===== テーマ切り替え（見た目のみ・生成ロジックには触れない） ===== */
+
+(function initTheme() {
+  var root = document.documentElement;
+  if (!root || !root.getAttribute || !root.setAttribute) return;
+  function apply(theme) {
+    root.setAttribute("data-theme", theme);
+    var btn = document.getElementById("themeToggle");
+    if (btn) btn.textContent = theme === "light" ? "☀️" : "🌙";
+  }
+  var current = root.getAttribute("data-theme");
+  if (current !== "light" && current !== "dark") {
+    try { current = localStorage.getItem("kakupro-theme"); } catch (e) { current = null; }
+  }
+  apply(current === "light" ? "light" : "dark");
+  var btn = document.getElementById("themeToggle");
+  if (btn && btn.addEventListener) {
+    btn.addEventListener("click", function () {
+      var next = root.getAttribute("data-theme") === "light" ? "dark" : "light";
+      apply(next);
+      try { localStorage.setItem("kakupro-theme", next); } catch (e) { /* 保存できなくても切り替え自体は有効 */ }
+    });
+  }
+})();
 
 /* ===== 初期化 ===== */
 
