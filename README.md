@@ -2,6 +2,9 @@
 
 実在しない架空の人物のプロフィールを、ワンボタンでランダム生成する静的Webツールです。生成結果はブラウザの中だけで作られ、外部に送信されません。
 
+🌐 公開先: [kakupro.vercel.app](https://kakupro.vercel.app)
+📜 更新履歴: [CHANGELOG.md](CHANGELOG.md)
+
 ## ✨ 機能
 
 ### プロフィール生成
