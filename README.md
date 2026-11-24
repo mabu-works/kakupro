@@ -39,9 +39,10 @@
 `windows/` フォルダに、同じ仕様の Windows アプリ（.NET 8 / WinForms）があります。データプール（姓31種・名30種・職業36種など）と項目ごとの固定・再抽選、カード画像（1200×630 PNG）の保存、X投稿向けテキストのコピーまで Web 版と同じです。
 
 - ビルド: `windows/build.bat`（Windows）または `windows/build.sh` で `windows/dist/Kakupro.exe` を生成
+- ダウンロード: [GitHub Releases（Windows版 v1.0.0）](https://github.com/mabu-works/kakupro/releases/tag/v1.0.0)
 - カード画像は保存ダイアログで保存先を選ぶ方式で、画面上のプレビューはありません
 
-## 技術メモ
+## 📋 技術メモ
 
 - ビルド不要の静的サイト（素の HTML / CSS / JavaScript、外部リソース不使用）。
 - 状態は項目ごとの `{ value, locked }` を保持し、再生成・再抽選・固定はすべてこの状態に対して操作しています。
