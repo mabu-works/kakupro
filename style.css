@@ -1,3 +1,4 @@
+/* 🎨 テーマ色（ダークが既定） */
 :root {
   --bg: #0a0f1c;
   --panel: #111a2c;
@@ -13,6 +14,7 @@
   --bar-bg: rgba(10, 15, 28, 0.82);
   color-scheme: dark;
 }
+/* ☀️ ライトテーマの配色 */
 :root[data-theme="light"] {
   --bg: #f3f5fa;
   --panel: #ffffff;
@@ -44,7 +46,7 @@ body {
 
 .wrap { max-width: 760px; margin: 0 auto; padding: 0 18px; }
 
-/* ===== トップバー ===== */
+/* 🧭 トップバー */
 
 .topbar {
   position: sticky;
@@ -86,7 +88,7 @@ body {
   line-height: 1;
 }
 
-/* ===== ヘッダー ===== */
+/* 🏷️ ヘッダー */
 
 .site-header {
   max-width: 760px;
@@ -137,7 +139,7 @@ body {
   font-size: 0.95rem;
 }
 
-/* ===== レイアウト・カード ===== */
+/* 🗂️ レイアウト・カード */
 
 main {
   max-width: 760px;
@@ -170,7 +172,7 @@ main {
 .card p { margin: 0 0 10px; }
 .card p:last-child { margin-bottom: 0; }
 
-/* ===== プロフィール ===== */
+/* 👤 プロフィール */
 
 .profile-list {
   display: grid;
@@ -210,7 +212,7 @@ main {
   font-size: 0.85rem;
 }
 
-/* ===== ボタン・フォーム ===== */
+/* 🔘 ボタン・フォーム */
 
 .button-row {
   display: flex;
@@ -276,7 +278,7 @@ textarea {
   background: var(--panel-2);
 }
 
-/* ===== フッター ===== */
+/* 🔻 フッター */
 
 .site-footer {
   max-width: 760px;
@@ -289,6 +291,7 @@ textarea {
 }
 .site-footer p { margin: 0; }
 
+/* ♿ 動きを減らす設定のときはアニメーションを止める */
 @media (prefers-reduced-motion: reduce) {
   html { scroll-behavior: auto; }
   button { transition: none; }

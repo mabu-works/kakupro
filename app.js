@@ -1,6 +1,8 @@
 'use strict';
 
-/* ===== プール ===== */
+// ==========================================
+// 🎲 生成データのプール
+// ==========================================
 
 const SURNAMES = [
 '佐藤', '鈴木', '高橋', '田中', '渡辺', '伊藤', '山本', '中村', '小林', '加藤',
@@ -56,13 +58,16 @@ const COMMENTS = [
 '推し活が生きがいです'
 ];
 
-/* ===== 項目定義 ===== */
+// ==========================================
+// 🗂️ 項目定義
+// ==========================================
 
+// 🎲 配列から1件ランダムに選ぶ
 function pick(arr) { return arr[Math.floor(Math.random() * arr.length)];}
 
 const FIELDS = [
 { key: 'name', label: '名前', generate: () => pick(SURNAMES) + ' ' + pick(GIVEN_NAMES)},
-{ key: 'age', label: '年齢', generate: () => String(6 + Math.floor(Math.random() * 84)) + '歳'},
+{ key: 'age', label: '年齢', generate: () => String(6 + Math.floor(Math.random() * 84)) + '歳'}, // 6〜89歳
 { key: 'job', label: '職業', generate: () => pick(JOBS)},
 { key: 'skill', label: '特技', generate: () => pick(SKILLS)},
 { key: 'like', label: '好きなもの', generate: () => pick(LIKES)},
@@ -71,18 +76,24 @@ const FIELDS = [
 { key: 'comment', label: '一言コメント', generate: () => pick(COMMENTS)}
 ];
 
-const state = {}; // key -> { value, locked}
+// 🗝️ 項目ごとの状態（値と固定フラグ）
+const state = {};
 for (const f of FIELDS) state[f.key] = { value: f.generate(), locked: false};
 
-/* ===== DOM 描画 ===== */
+// ==========================================
+// 🖥️ DOM 描画
+// ==========================================
 
+// 🔍 id から要素を取得する
 const $ = (id) => document.getElementById(id);
 const listEl = $('profile-list');
 const statusEl = $('status');
 const shareEl = $('share-text');
 
+// 📣 ステータス文を表示する
 function setStatus(msg) { statusEl.textContent = msg;}
 
+// 🧱 項目ごとの表示行を組み立てる
 function buildRows() {
 listEl.innerHTML = '';
 for (const f of FIELDS) {
@@ -124,6 +135,7 @@ listEl.appendChild(row);
 }
 }
 
+// 📝 共有用のプロフィール文を作る
 function profileText() {
 const lines = [''];
 for (const f of FIELDS) lines.push(f.label + '：' + state[f.key].value);
@@ -131,6 +143,7 @@ lines.push('#kakupro');
 return lines.join('\n');
 }
 
+// 🔄 表示と共有テキスト・カードを更新する
 function refresh() {
 for (const f of FIELDS) {
 $('value-' + f.key).textContent = state[f.key].value;
@@ -139,12 +152,15 @@ shareEl.value = profileText();
 drawCard();
 }
 
-/* ===== カード描画（Canvas） ===== */
+// ==========================================
+// 🖼️ カード描画（Canvas）
+// ==========================================
 
+// 🖼️ プロフィールカードを Canvas に描く
 function drawCard() {
 const canvas = $('card-canvas');
 const ctx = canvas.getContext('2d');
-const W = 1200, H = 630;
+const W = 1200, H = 630; // カード画像の大きさ
 
 ctx.fillStyle = '#123a3f';
 ctx.fillRect(0, 0, W, H);
@@ -179,7 +195,7 @@ ctx.fillText(value, 250, y);
 y += 48;
 }
 
-/* 一言コメントとクレジットが重ならないよう、行間を詰めて下部に余白を確保する */
+// 💬 一言コメントとクレジットが重ならないよう、行間を詰めて下部に余白を確保する
 ctx.fillStyle = '#fde68a';
 ctx.font = '700 30px sans-serif';
 ctx.fillText('「' + state.comment.value.replace(/^「|」$/g, '') + '」', 64, y + 22);
@@ -189,8 +205,11 @@ ctx.font = '24px sans-serif';
 ctx.fillText('kakupro — 架空プロフィール生成器', 64, H - 40);
 }
 
-/* ===== ボタン ===== */
+// ==========================================
+// 🔘 ボタン
+// ==========================================
 
+// 🔄 固定以外を再生成する
 $('btn-regen').addEventListener('click', () => {
 for (const f of FIELDS) {
 if (!state[f.key].locked) state[f.key].value = f.generate();
@@ -199,12 +218,14 @@ refresh();
 setStatus('固定した項目以外を再生成しました。');
 });
 
+// 🎲 全部の項目を作り直す
 $('btn-all-new').addEventListener('click', () => {
 for (const f of FIELDS) state[f.key].value = f.generate();
 refresh();
 setStatus('全部の項目を作り直しました（固定チェックはそのままです）。');
 });
 
+// 🖼️ カード画像をダウンロードする
 $('btn-card').addEventListener('click', () => {
 drawCard();
 const a = document.createElement('a');
@@ -214,6 +235,7 @@ a.click();
 setStatus('プロフィールカードをダウンロードしました。');
 });
 
+// 📋 共有テキストをコピーする
 $('btn-copy').addEventListener('click', async () => {
 try {
 await navigator.clipboard.writeText(shareEl.value);
@@ -225,8 +247,12 @@ setStatus('テキストをコピーしました。');
 }
 });
 
-/* ===== テーマ切り替え（見た目のみ・生成ロジックには触れない） ===== */
+// ==========================================
+// 🎨 テーマ切り替え
+// ==========================================
 
+// 💡 見た目のみの切り替え・生成ロジックには触れない
+// 🌙 保存済みテーマを復元して切り替えボタンを設定する
 (function initTheme() {
   var root = document.documentElement;
   if (!root || !root.getAttribute || !root.setAttribute) return;
@@ -250,7 +276,9 @@ setStatus('テキストをコピーしました。');
   }
 })();
 
-/* ===== 初期化 ===== */
+// ==========================================
+// 🚀 初期化
+// ==========================================
 
 buildRows();
 refresh();

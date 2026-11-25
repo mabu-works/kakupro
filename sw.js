@@ -1,6 +1,12 @@
 'use strict';
 
-const CACHE_NAME = 'kakupro-v3';
+// ==========================================
+// 📦 オフライン対応（Service Worker）
+// ==========================================
+
+const CACHE_NAME = 'kakupro-v3'; // キャッシュの版（更新時に上げる）
+
+// 📥 初回にまとめて保存するファイル
 const PRECACHE_URLS = [
   './',
   './index.html',
@@ -11,6 +17,7 @@ const PRECACHE_URLS = [
   './icons/icon-512.png'
 ];
 
+// 📥 インストール時に主要ファイルをキャッシュする
 self.addEventListener('install', (event) => {
   event.waitUntil(
     caches.open(CACHE_NAME)
@@ -19,6 +26,7 @@ self.addEventListener('install', (event) => {
   );
 });
 
+// 🧹 古いキャッシュを削除して引き継ぐ
 self.addEventListener('activate', (event) => {
   event.waitUntil(
     caches.keys()
@@ -27,6 +35,7 @@ self.addEventListener('activate', (event) => {
   );
 });
 
+// 🌐 同一オリジンの GET はキャッシュ優先で返す
 self.addEventListener('fetch', (event) => {
   if (event.request.method !== 'GET') return;
   const url = new URL(event.request.url);
@@ -38,7 +47,7 @@ self.addEventListener('fetch', (event) => {
         const copy = response.clone();
         caches.open(CACHE_NAME).then((cache) => cache.put(event.request, copy));
         return response;
-      }).catch(() => caches.match('./index.html'));
+      }).catch(() => caches.match('./index.html')); // 取得に失敗したらトップページを返す
     })
   );
 });

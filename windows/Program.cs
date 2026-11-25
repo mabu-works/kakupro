@@ -9,6 +9,7 @@ namespace Kakupro
 {
     internal static class Program
     {
+        // 🚀 アプリの入口（フォームを起動する）
         [STAThread]
         private static void Main()
         {
@@ -17,9 +18,15 @@ namespace Kakupro
         }
     }
 
+    // ==========================================
+    // 🖥️ メイン画面
+    // ==========================================
+
     internal sealed class MainForm : Form
     {
-        // Web版（kakupro）と同じデータプール
+        // ==========================================
+        // 🎲 生成データのプール（Web版と同じ内容）
+        // ==========================================
         private static readonly string[] Surnames =
         {
             "佐藤", "鈴木", "高橋", "田中", "渡辺", "伊藤",
@@ -86,6 +93,7 @@ namespace Kakupro
             "一期一会を大切にしています", "継続は力なり、が座右の銘", "いつも眠いです", "推し活が生きがいです",
         };
 
+        // 📋 項目定義
         private sealed class FieldDef
         {
             public string Key = "";
@@ -93,12 +101,14 @@ namespace Kakupro
             public Func<string> Generate = () => "";
         }
 
+        // 🎲 プールから1件ランダムに選ぶ
         private static string Pick(string[] arr) => arr[RandomNumberGenerator.GetInt32(arr.Length)];
 
+        // 🗂️ 生成する項目一覧
         private static readonly FieldDef[] Fields =
         {
             new FieldDef { Key = "name", Label = "名前", Generate = () => Pick(Surnames) + " " + Pick(GivenNames) },
-            new FieldDef { Key = "age", Label = "年齢", Generate = () => (6 + RandomNumberGenerator.GetInt32(84)) + "歳" },
+            new FieldDef { Key = "age", Label = "年齢", Generate = () => (6 + RandomNumberGenerator.GetInt32(84)) + "歳" }, // 6〜89歳
             new FieldDef { Key = "job", Label = "職業", Generate = () => Pick(Jobs) },
             new FieldDef { Key = "skill", Label = "特技", Generate = () => Pick(Skills) },
             new FieldDef { Key = "like", Label = "好きなもの", Generate = () => Pick(Likes) },
@@ -107,6 +117,7 @@ namespace Kakupro
             new FieldDef { Key = "comment", Label = "一言コメント", Generate = () => Pick(Comments) },
         };
 
+        // 🎨 画面の配色
         private static readonly Color Bg = Color.FromArgb(10, 15, 28);
         private static readonly Color Surface = Color.FromArgb(17, 26, 46);
         private static readonly Color TextColor = Color.FromArgb(236, 241, 248);
@@ -114,12 +125,14 @@ namespace Kakupro
         private static readonly Color Accent = Color.FromArgb(106, 141, 255);
         private static readonly Color Accent2 = Color.FromArgb(45, 212, 191);
 
+        // 🗝️ 項目ごとの値と表示部品
         private readonly Dictionary<string, string> _values = new Dictionary<string, string>();
         private readonly Dictionary<string, Label> _valueLabels = new Dictionary<string, Label>();
         private readonly Dictionary<string, CheckBox> _lockBoxes = new Dictionary<string, CheckBox>();
         private readonly Label statusLabel;
         private readonly TextBox shareTextBox;
 
+        // 🧱 画面を組み立てる
         public MainForm()
         {
             Text = "kakupro for Windows｜架空プロフィール生成器";
@@ -139,7 +152,7 @@ namespace Kakupro
             };
             Controls.Add(title);
 
-            // 初期生成（Web版と同じく開いた時点で1人生成される）
+            // 🌱 開いた時点で1人分を生成する
             foreach (var f in Fields) _values[f.Key] = f.Generate();
 
             int y = 60;
@@ -201,6 +214,7 @@ namespace Kakupro
                 y += 36;
             }
 
+            // 🔄 固定以外を再生成する
             var regenBtn = new Button
             {
                 Text = "再生成（固定以外）",
@@ -223,6 +237,7 @@ namespace Kakupro
             };
             Controls.Add(regenBtn);
 
+            // 🎲 全部の項目を作り直す
             var allNewBtn = SubButton("全部ランダムに作り直す", 272, 360, 240);
             allNewBtn.Click += (s, e) =>
             {
@@ -261,6 +276,7 @@ namespace Kakupro
             };
             Controls.Add(shareTitle);
 
+            // 🖼️ カード画像を保存する
             var cardBtn = new Button
             {
                 Text = "カード画像を保存",
@@ -275,6 +291,7 @@ namespace Kakupro
             cardBtn.Click += (s, e) => SaveCardImage();
             Controls.Add(cardBtn);
 
+            // 📋 共有テキストをコピーする
             var copyBtn = SubButton("テキストをコピー（X投稿向け）", 272, 502, 240);
             copyBtn.Click += (s, e) =>
             {
@@ -308,6 +325,7 @@ namespace Kakupro
             RefreshProfile();
         }
 
+        // 🔘 補助ボタン（共通の見た目）を作る
         private Button SubButton(string text, int x, int y, int w)
         {
             var b = new Button
@@ -323,8 +341,10 @@ namespace Kakupro
             return b;
         }
 
+        // 📣 ステータス文を表示する
         private void SetStatus(string msg) => statusLabel.Text = msg;
 
+        // 📝 共有用のプロフィール文を作る
         private string ProfileText()
         {
             var lines = new List<string> { "" };
@@ -333,13 +353,14 @@ namespace Kakupro
             return string.Join(Environment.NewLine, lines);
         }
 
+        // 🔄 表示と共有テキストを更新する
         private void RefreshProfile()
         {
             foreach (var f in Fields) _valueLabels[f.Key].Text = _values[f.Key];
             shareTextBox.Text = ProfileText();
         }
 
-        // Web版 drawCard と同じレイアウト・配色でカード画像（1200×630）を描く
+        // 🖼️ Web版 drawCard と同じレイアウト・配色でカード画像（1200×630）を描く
         private void SaveCardImage()
         {
             using var bmp = new Bitmap(1200, 630);
@@ -357,7 +378,7 @@ namespace Kakupro
                 var nameFont = new Font("Yu Gothic UI", 64F, FontStyle.Bold);
                 var rowHeadFont = new Font("Yu Gothic UI", 28F, FontStyle.Bold);
                 var rowFont = new Font("Yu Gothic UI", 30F);
-                // Canvas の fillText はベースライン指定。GDI+ は上端指定なのでフォントサイズ分ずらす
+                // 📐 Canvas の fillText はベースライン指定・GDI+ は上端指定のためフォントサイズ分ずらす
                 g.DrawString("架空プロフィール", titleFont, headBrush, 64, 88 - 34);
                 g.DrawString(_values["name"], nameFont, whiteBrush, 64, 168 - 78);
 
