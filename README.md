@@ -1,9 +1,16 @@
 # kakupro｜架空プロフィール生成器
 
-実在しない架空の人物のプロフィールを、ワンボタンでランダム生成する静的Webツールです。生成結果はブラウザの中だけで作られ、外部に送信されません。
+| 項目 | 内容 |
+|---|---|
+| バージョン | –（日付管理） |
+| 状態 | 公開中 |
+| 公開先 | [kakupro.vercel.app](https://kakupro.vercel.app) |
+| 実装 | 素の HTML / CSS / JavaScript（ビルド不要の静的サイト） |
+| 更新履歴 | [CHANGELOG.md](CHANGELOG.md) |
 
-🌐 公開先: [kakupro.vercel.app](https://kakupro.vercel.app)
-📜 更新履歴: [CHANGELOG.md](CHANGELOG.md)
+## 📖 概要
+
+実在しない架空の人物のプロフィールを、ワンボタンでランダム生成する静的Webツールです。生成結果はブラウザの中だけで作られ、外部に送信されません。
 
 ## ✨ 機能
 
@@ -48,3 +55,15 @@
 - 状態は項目ごとの `{ value, locked }` を保持し、再生成・再抽選・固定はすべてこの状態に対して操作しています。
 - Service Worker（`sw.js`）が同一オリジンのGETリクエストを `kakupro-v2` キャッシュに保存します。
 - アイコンは PIL で生成した PNG（角丸の teal 背景に白い「架」の文字）。
+
+## 📁 ファイル構成
+
+| パス | 役割 |
+|---|---|
+| `index.html` | 画面 |
+| `style.css` | スタイル |
+| `app.js` | プロフィール生成の本体 |
+| `sw.js` | Service Worker |
+| `manifest.webmanifest` | PWA マニフェスト |
+| `icons/` | アイコン |
+| `windows/` | Windows 版（.NET 8 / WinForms） |
